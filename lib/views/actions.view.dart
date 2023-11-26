@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_aws_chime/models/meeting.model.dart';
-import 'package:flutter_aws_chime/models/meeting.theme.model.dart';
-import 'package:flutter_aws_chime/utils/snackbar.dart';
 
+import '../models/meeting.model.dart';
+import '../models/meeting.theme.model.dart';
+import '../utils/snackbar.dart';
 import 'icon.button.view.dart';
 
 class ActionsView extends StatelessWidget {
@@ -35,20 +35,21 @@ class ActionsView extends StatelessWidget {
             IconButtonView(
               icon: MeetingModel().getMuteStatus() ? Icons.mic_off : Icons.mic,
               onTap: () async {
-                var res = await MeetingModel().toggleMute();
+                final res = await MeetingModel().toggleMute();
                 return res ? Icons.mic_off : Icons.mic;
               },
             ),
             IconButtonView(
-                icon: MeetingModel().getVideoOn()
+              icon: MeetingModel().getVideoOn()
+                  ? Icons.videocam_outlined
+                  : Icons.videocam_off_outlined,
+              onTap: () async {
+                final res = await MeetingModel().toggleVideo();
+                return res
                     ? Icons.videocam_outlined
-                    : Icons.videocam_off_outlined,
-                onTap: () async {
-                  var res = await MeetingModel().toggleVideo();
-                  return res
-                      ? Icons.videocam_outlined
-                      : Icons.videocam_off_outlined;
-                }),
+                    : Icons.videocam_off_outlined;
+              },
+            ),
             IconButtonView(
               icon: Icons.headphones_outlined,
               onTap: () => showAudioDeviceDialog(context),
@@ -59,10 +60,12 @@ class ActionsView extends StatelessWidget {
                 if (MediaQuery.of(context).orientation ==
                     Orientation.portrait) {
                   SystemChrome.setPreferredOrientations(
-                      [DeviceOrientation.landscapeLeft]);
+                    [DeviceOrientation.landscapeLeft],
+                  );
                 } else {
                   SystemChrome.setPreferredOrientations(
-                      [DeviceOrientation.portraitUp]);
+                    [DeviceOrientation.portraitUp],
+                  );
                 }
               },
             ),
@@ -73,47 +76,50 @@ class ActionsView extends StatelessWidget {
   }
 
   Future<void> showAudioDeviceDialog(BuildContext context) async {
-    String? device = await showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          var selected = MeetingModel().selectedAudioDevice;
-          var selectedIcon = Icon(
-            Icons.check,
-            color: MeetingTheme().audioActiveColor,
-          );
-          var items = MeetingModel()
-              .deviceList
-              .whereType<String>()
-              .map((e) => ListTile(
-                    leading: Icon(
-                      e.toLowerCase().contains('speaker')
-                          ? Icons.volume_up_outlined
-                          : Icons.hearing_outlined,
-                    ),
-                    title: Text(e),
-                    onTap: () {
-                      Navigator.pop(context, e);
-                    },
-                    trailing: selected == e ? selectedIcon : null,
-                  ))
-              .toList();
-          // TODO find the way to turn off sound
-          // items.add(ListTile(
-          //   leading: const Icon(Icons.volume_off_outlined),
-          //   title: const Text('Turn off sound'),
-          //   onTap: () {
-          //     Navigator.pop(context, '');
-          //   },
-          //   trailing: selected == '' ? selectedIcon : null,
-          // ));
-          return SizedBox(
-            height: 200,
-            child: ListView(
-              padding: const EdgeInsets.all(8),
-              children: items,
-            ),
-          );
-        });
+    final String? device = await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        final selected = MeetingModel().selectedAudioDevice;
+        final selectedIcon = Icon(
+          Icons.check,
+          color: MeetingTheme().audioActiveColor,
+        );
+        final items = MeetingModel()
+            .deviceList
+            .whereType<String>()
+            .map(
+              (e) => ListTile(
+                leading: Icon(
+                  e.toLowerCase().contains('speaker')
+                      ? Icons.volume_up_outlined
+                      : Icons.hearing_outlined,
+                ),
+                title: Text(e),
+                onTap: () {
+                  Navigator.pop(context, e);
+                },
+                trailing: selected == e ? selectedIcon : null,
+              ),
+            )
+            .toList();
+        // TODO find the way to turn off sound
+        // items.add(ListTile(
+        //   leading: const Icon(Icons.volume_off_outlined),
+        //   title: const Text('Turn off sound'),
+        //   onTap: () {
+        //     Navigator.pop(context, '');
+        //   },
+        //   trailing: selected == '' ? selectedIcon : null,
+        // ));
+        return SizedBox(
+          height: 200,
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: items,
+          ),
+        );
+      },
+    );
     if (device == null) {
       return;
     }
@@ -127,7 +133,7 @@ class ActionsView extends StatelessWidget {
       return;
     }
     try {
-      var res = await MeetingModel().sendMessage(messageTextController.text);
+      final res = await MeetingModel().sendMessage(messageTextController.text);
       if (res) {
         MeetingModel().hideControlInSeconds();
         messageTextController.clear();
@@ -155,7 +161,7 @@ class ActionsView extends StatelessWidget {
               icon: Icons.send,
               showBackgroundColor: false,
               onTap: () => sendMessage(context),
-            )
+            ),
           ],
         ),
       ),

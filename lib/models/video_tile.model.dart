@@ -1,10 +1,6 @@
-class VideoTileModel {
-  final int tileId;
-  int videoStreamContentWidth;
-  int videoStreamContentHeight;
-  bool isLocalTile;
-  bool isContentShare;
+import 'common.dart';
 
+class VideoTileModel {
   VideoTileModel(
     this.tileId,
     this.videoStreamContentWidth,
@@ -13,12 +9,18 @@ class VideoTileModel {
     this.isContentShare,
   );
 
-  factory VideoTileModel.fromJson(json) {
-    return VideoTileModel(
-        json["tileId"],
-        json["videoStreamContentWidth"],
-        json["videoStreamContentHeight"],
-        json["isLocalTile"],
-        json["isContent"]);
-  }
+  VideoTileModel.fromJson(Json json)
+      : this(
+          json["tileId"],
+          json["videoStreamContentWidth"],
+          json["videoStreamContentHeight"],
+          json["isLocalTile"],
+          json["isContent"],
+        );
+
+  final int tileId;
+  int videoStreamContentWidth;
+  int videoStreamContentHeight;
+  bool isLocalTile;
+  bool isContentShare;
 }

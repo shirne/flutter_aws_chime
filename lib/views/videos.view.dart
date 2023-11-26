@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aws_chime/views/pinch_view.dart';
+
 import '../models/attendee.model.dart';
-import '../models/video_tile.model.dart';
-import '/models/meeting.model.dart';
-import '/views/video_tile.view.dart';
 import '../models/meeting.theme.model.dart';
+import 'pinch_view.dart';
+import 'video_tile.view.dart';
 
 class VideosView extends StatelessWidget {
   final List<AttendeeModel> attendees;
@@ -17,20 +16,20 @@ class VideosView extends StatelessWidget {
   }
 
   Widget _buildPageAttendees(List<AttendeeModel> attendees) {
-    List<Widget> rows = [];
+    final List<Widget> rows = [];
 
     if (attendees.length <= 2) {
       rows.addAll(attendees.map((e) => Expanded(child: _buildAttendeeItem(e))));
     } else {
       for (var i = 0; i < attendees.length / 2; i++) {
-        var index = i * 2;
+        final index = i * 2;
         rows.add(
           Expanded(
             child: Row(
               children: [
                 Expanded(child: _buildAttendeeItem(attendees[index])),
                 if (index + 1 < attendees.length)
-                  Expanded(child: _buildAttendeeItem(attendees[index + 1]))
+                  Expanded(child: _buildAttendeeItem(attendees[index + 1])),
               ],
             ),
           ),
@@ -54,7 +53,7 @@ class VideosView extends StatelessWidget {
   Widget _buildAttendeeItem(AttendeeModel item) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        var widget = item.isVideoOn && item.videoTile?.tileId != null
+        final widget = item.isVideoOn && item.videoTile?.tileId != null
             ? PinchView(
                 contentRatio: item.videoTile!.videoStreamContentWidth /
                     item.videoTile!.videoStreamContentHeight,

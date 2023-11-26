@@ -1,4 +1,3 @@
-
 import 'flutter_aws_chime_platform_interface.dart';
 
 class FlutterAwsChime {

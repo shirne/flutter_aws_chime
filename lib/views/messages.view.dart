@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_aws_chime/models/meeting.model.dart';
-import 'package:flutter_aws_chime/models/meeting.theme.model.dart';
-import 'package:flutter_aws_chime/models/message.model.dart';
 
+import '../models/meeting.model.dart';
+import '../models/meeting.theme.model.dart';
+import '../models/message.model.dart';
 import '../utils/format.dart';
 
 class MessagesView extends StatefulWidget {
@@ -42,7 +42,7 @@ class _MessagesViewState extends State<MessagesView> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Positioned(
       left: MeetingTheme().baseUnit * 2,
       bottom: MeetingTheme().actionViewHeight,
@@ -56,10 +56,11 @@ class _MessagesViewState extends State<MessagesView> {
         child: SingleChildScrollView(
           reverse: true,
           child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: messages.length,
-              itemBuilder: (context, index) => chatBubble(messages[index])),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: messages.length,
+            itemBuilder: (context, index) => chatBubble(messages[index]),
+          ),
         ),
       ),
     );

@@ -38,7 +38,7 @@ class _PinchViewState extends State<PinchView> {
   }
 
   void init({required double width, required double height}) {
-    var widgetRatio = width / height;
+    final widgetRatio = width / height;
     minWidth = min(width, height * widget.contentRatio);
     minHeight = min(height, width / widget.contentRatio);
     if (widgetRatio < widget.contentRatio) {
@@ -67,7 +67,7 @@ class _PinchViewState extends State<PinchView> {
               init(width: constraints.maxWidth, height: constraints.maxHeight);
             }
             _o = orientation;
-            var item = Container(
+            final item = Container(
               height: constraints.maxHeight,
               width: constraints.maxWidth,
               clipBehavior: Clip.antiAlias,
@@ -104,7 +104,7 @@ class _PinchViewState extends State<PinchView> {
                 }
               },
               onScaleUpdate: (details) {
-                var val = _baseScaleFactor * details.scale;
+                final val = _baseScaleFactor * details.scale;
                 // handle movement
                 if (details.pointerCount == 1) {
                   var x = (_baseDragOffset.dx - details.focalPoint.dx) /

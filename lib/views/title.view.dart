@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_aws_chime/views/icon.button.view.dart';
 
+import 'icon.button.view.dart';
 import '../models/meeting.model.dart';
 import '../models/meeting.theme.model.dart';
 
@@ -24,9 +22,9 @@ class TitleView extends StatelessWidget {
           IconButtonView(
             icon: Icons.arrow_back_ios,
             onTap: () async {
-              var res = await MeetingModel().stopMeeting();
+              final res = await MeetingModel().stopMeeting();
               if (onLeave != null) {
-                onLeave!(res);
+                onLeave?.call(res);
               }
             },
           ),

@@ -5,7 +5,7 @@ import 'package:flutter_aws_chime/flutter_aws_chime_method_channel.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelFlutterAwsChime platform = MethodChannelFlutterAwsChime();
+  final MethodChannelFlutterAwsChime platform = MethodChannelFlutterAwsChime();
   const MethodChannel channel = MethodChannel('flutter_aws_chime');
 
   setUp(() {

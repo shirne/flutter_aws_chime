@@ -20,8 +20,8 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    FlutterAwsChime flutterAwsChimePlugin = FlutterAwsChime();
-    MockFlutterAwsChimePlatform fakePlatform = MockFlutterAwsChimePlatform();
+    final FlutterAwsChime flutterAwsChimePlugin = FlutterAwsChime();
+    final MockFlutterAwsChimePlatform fakePlatform = MockFlutterAwsChimePlatform();
     FlutterAwsChimePlatform.instance = fakePlatform;
 
     expect(await flutterAwsChimePlugin.getPlatformVersion(), '42');

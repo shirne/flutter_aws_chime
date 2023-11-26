@@ -1,5 +1,4 @@
-import 'package:flutter_aws_chime/models/message.model.dart';
-
+import '../models/message.model.dart';
 import '../models/attendee.model.dart';
 
 class RealtimeInterface {

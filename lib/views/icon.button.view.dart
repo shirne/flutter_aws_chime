@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aws_chime/models/meeting.theme.model.dart';
 
 import '../utils/snackbar.dart';
 
@@ -34,7 +33,7 @@ class _IconButtonViewState extends State<IconButtonView> {
         setState(() {
           _loading = true;
         });
-        var res = await widget.onTap!();
+        final res = await widget.onTap!();
         setState(() {
           _loading = false;
         });

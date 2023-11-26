@@ -5,11 +5,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_aws_chime/models/message.model.dart';
 
 import '../interfaces/audio_video_interface.dart';
 import '../interfaces/realtime_interface.dart';
 import '../interfaces/video_tile_interfcae.dart';
+import '../models/common.dart';
+import '../models/message.model.dart';
 import '../models/attendee.model.dart';
 import '../models/meeting.model.dart';
 import '../models/video_tile.model.dart';
@@ -60,10 +61,13 @@ class MethodChannelCoordinator {
     initializeVideoTileObserver(meeting);
   }
 
-  Future<MethodChannelResponse?> callMethod(String methodName,
-      [dynamic args]) async {
+  Future<MethodChannelResponse?> callMethod(
+    String methodName, [
+    dynamic args,
+  ]) async {
     try {
-      dynamic response = await methodChannel.invokeMethod(methodName, args);
+      final dynamic response =
+          await methodChannel.invokeMethod(methodName, args);
       return MethodChannelResponse.fromJson(response);
     } catch (e) {
       return MethodChannelResponse(false, null);
@@ -73,6 +77,7 @@ class MethodChannelCoordinator {
   Future<void> methodCallHandler(MethodCall call) async {
     debugPrint("method called ${call.method} ${call.arguments}");
     try {
+      final arg = call.arguments as Map<String, dynamic>?;
       switch (call.method) {
         case MethodCallOption.join:
           final AttendeeModel attendee = AttendeeModel.fromJson(call.arguments);
@@ -95,13 +100,13 @@ class MethodChannelCoordinator {
           realtimeObserver?.attendeeDidUnmute(attendee);
           break;
         case MethodCallOption.videoTileAdd:
-          final String attendeeId = call.arguments["attendeeId"];
+          final String attendeeId = arg?["attendeeId"];
           final VideoTileModel videoTile =
               VideoTileModel.fromJson(call.arguments);
           videoTileObserver?.videoTileDidAdd(attendeeId, videoTile);
           break;
         case MethodCallOption.videoTileRemove:
-          final String attendeeId = call.arguments["attendeeId"];
+          final String attendeeId = arg?["attendeeId"];
           final VideoTileModel videoTile =
               VideoTileModel.fromJson(call.arguments);
           videoTileObserver?.videoTileDidRemove(attendeeId, videoTile);
@@ -115,16 +120,18 @@ class MethodChannelCoordinator {
           break;
         default:
           debugPrint(
-              "Method ${call.method} with args ${call.arguments} does not exist");
+            "Method ${call.method} with args ${call.arguments} does not exist",
+          );
       }
     } catch (e) {
       debugPrint(
-          "Error: call ${call.method} with arguments ${call.arguments} failed: $e");
+        "Error: call ${call.method} with arguments ${call.arguments} failed: $e",
+      );
     }
   }
 
   Future<bool> requestAudioPermissions() async {
-    MethodChannelResponse? audioPermission =
+    final MethodChannelResponse? audioPermission =
         await callMethod(MethodCallOption.manageAudioPermissions);
     if (audioPermission == null) {
       return false;
@@ -133,7 +140,7 @@ class MethodChannelCoordinator {
   }
 
   Future<bool> requestVideoPermissions() async {
-    MethodChannelResponse? videoPermission =
+    final MethodChannelResponse? videoPermission =
         await callMethod(MethodCallOption.manageVideoPermissions);
     if (videoPermission != null) {
       return videoPermission.result;
@@ -142,7 +149,7 @@ class MethodChannelCoordinator {
   }
 
   Future<bool> sendMessage(MessageSendModel data) async {
-    MethodChannelResponse? res = await callMethod(
+    final MethodChannelResponse? res = await callMethod(
       MethodCallOption.sendMessage,
       {
         "topic": data.topic,
@@ -157,7 +164,7 @@ class MethodChannelCoordinator {
   }
 
   Future<bool> toggleSound(bool off) async {
-    MethodChannelResponse? res =
+    final MethodChannelResponse? res =
         await callMethod(MethodCallOption.toggleSound, off);
     if (res == null) {
       return false;
@@ -167,12 +174,14 @@ class MethodChannelCoordinator {
 }
 
 class MethodChannelResponse {
-  late bool result;
+  bool result;
   dynamic arguments;
 
   MethodChannelResponse(this.result, this.arguments);
 
-  factory MethodChannelResponse.fromJson(dynamic json) {
-    return MethodChannelResponse(json["result"], json["arguments"]);
-  }
+  MethodChannelResponse.fromJson(Json json)
+      : this(
+          as<bool>(json["result"]) ?? false,
+          json["arguments"],
+        );
 }

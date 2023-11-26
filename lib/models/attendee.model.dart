@@ -1,6 +1,19 @@
-import './video_tile.model.dart';
+import 'common.dart';
+import 'video_tile.model.dart';
 
 class AttendeeModel {
+  AttendeeModel(
+    this.attendeeId,
+    this.externalUserId, {
+    DateTime? joinedAt,
+  }) : joinedAt = joinedAt ?? DateTime.now();
+
+  AttendeeModel.fromJson(Json json)
+      : this(
+          as<String>(json["attendeeId"]) ?? '',
+          as<String>(json["externalUserId"]) ?? '',
+        );
+
   final String attendeeId;
   final String externalUserId;
 
@@ -9,14 +22,4 @@ class AttendeeModel {
 
   VideoTileModel? videoTile;
   final DateTime joinedAt;
-
-  AttendeeModel(
-    this.attendeeId,
-    this.externalUserId, {
-    DateTime? joinedAt,
-  }) : joinedAt = joinedAt ?? DateTime.now();
-
-  factory AttendeeModel.fromJson(dynamic json) {
-    return AttendeeModel(json["attendeeId"], json["externalUserId"]);
-  }
 }

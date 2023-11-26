@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aws_chime/models/join_info.model.dart';
-import 'package:flutter_aws_chime/models/meeting.model.dart';
-import 'package:flutter_aws_chime/views/main.view.dart';
-import 'package:flutter_aws_chime/views/title.view.dart';
 
+import '../models/join_info.model.dart';
+import '../models/meeting.model.dart';
+import 'main.view.dart';
+import 'title.view.dart';
 import 'actions.view.dart';
 import 'control_visible.view.dart';
 import 'messages.view.dart';
@@ -29,7 +29,7 @@ class _MeetingViewState extends State<MeetingView> {
 
   void init() async {
     meeting.config(meetingData: widget.joinData);
-    var res = await meeting.join();
+    final res = await meeting.join();
     debugPrint("join res: $res");
   }
 

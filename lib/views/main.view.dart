@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_aws_chime/views/content_share.view.dart';
-import 'package:flutter_aws_chime/views/videos.view.dart';
 
 import '../models/attendee.model.dart';
 import '../models/meeting.model.dart';
 import '../models/meeting.theme.model.dart';
 import '../models/video_tile.model.dart';
+import 'content_share.view.dart';
+import 'videos.view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -53,10 +53,10 @@ class _MainViewState extends State<MainView> {
 
   void attendeesListener() {
     if (mounted) {
-      var pageSize = MeetingTheme().pageAttendeeSize;
-      var res = MeetingModel().getSortedAttendees();
+      final pageSize = MeetingTheme().pageAttendeeSize;
+      final res = MeetingModel().getSortedAttendees();
       setState(() {
-        var ind = max(0, currentIndex - (isScreenSharing ? 1 : 0));
+        final ind = max(0, currentIndex - (isScreenSharing ? 1 : 0));
         attendees = res
             .getRange(ind * pageSize, min((ind + 1) * pageSize, res.length))
             .toList();
@@ -75,7 +75,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return isScreenSharing && currentIndex == 0
-        ? ContentShareView()
+        ? const ContentShareView()
         : VideosView(
             attendees: attendees,
           );

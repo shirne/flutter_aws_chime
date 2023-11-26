@@ -64,7 +64,7 @@ class _PageIndicatorViewState extends State<PageIndicatorView> {
 
   @override
   Widget build(BuildContext context) {
-    var total = totalPage + (isScreenSharing ? 1 : 0);
+    final total = totalPage + (isScreenSharing ? 1 : 0);
     if (total <= 1) {
       return Container();
     }
@@ -81,7 +81,8 @@ class _PageIndicatorViewState extends State<PageIndicatorView> {
             size: const Size.square(9.0),
             activeSize: const Size(18.0, 9.0),
             activeShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
           ),
           onTap: (int index) {
             MeetingModel().currentPageIndex.add(index);
