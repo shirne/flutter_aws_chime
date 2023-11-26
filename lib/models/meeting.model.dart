@@ -312,8 +312,9 @@ class MeetingModel
 
   @override
   Future<void> listAudioDevices() async {
-    final MethodChannelResponse? devices = await methodChannelProvider
-        .callMethod(MethodCallOption.listAudioDevices);
+    final devices = await methodChannelProvider.callMethod(
+      MethodCallOption.listAudioDevices,
+    );
 
     if (devices == null) {
       debugPrint(Response.null_audio_device_list);

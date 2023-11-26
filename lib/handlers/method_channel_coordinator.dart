@@ -66,8 +66,7 @@ class MethodChannelCoordinator {
     dynamic args,
   ]) async {
     try {
-      final dynamic response =
-          await methodChannel.invokeMethod(methodName, args);
+      final response = await methodChannel.invokeMethod(methodName, args);
       return MethodChannelResponse.fromJson(response);
     } catch (e) {
       return MethodChannelResponse(false, null);
